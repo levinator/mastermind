@@ -26,10 +26,12 @@
       background-color: #ffffff;
     }
     </style>
+    <script src="http://code.jquery.com/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="mastermind.js" type="text/javascript"></script>
   </head>
   <body>
     <h1>MasterMind</h1>
-    <table>
+    <table id="brett">
       <colgroup>
         <col id="bewertung"/>
       </colgroup>
@@ -63,14 +65,7 @@
       <tr>
         <th></th>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <th></th>
-        <td></td>
-        <td></td>
+        <td class="s3s3"></td>
         <td></td>
         <td></td>
       </tr>
@@ -83,8 +78,15 @@
       </tr>
       <tr>
         <th></th>
+        <td class="s3s3"></td>
+        <td class="s3s3" id="hippo"></td>
         <td></td>
         <td></td>
+      </tr>
+      <tr>
+        <th></th>
+        <td></td>
+        <td class="s3s3"></td>
         <td></td>
         <td></td>
       </tr>
@@ -98,9 +100,9 @@
       <tr>
         <th></th>
         <td onclick="alert('Huhu')"></td>
+        <td onclick="alert('ätsch,falsch')"></td> 
         <td></td>
-        <td></td>
-        <td></td>
+        <td></dt>
       </tr>
     </table>
   </body>
