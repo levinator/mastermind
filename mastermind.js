@@ -1,11 +1,11 @@
-var felder = 8;
-var zuege = 30;
+var felder = 3;
+var zuege = 5;
 var palette = ['blue', 'red', 'green', 'orange', 'purple', 'yellow'];
 var farben = palette.length;
 
 var neues_brett = function(breite, hoehe) {
   var brett = $('table#brett');
-  var colgroup = $('<colgroup></colgroup>');
+  var colgroup = $('<colgroup><col id="bewertung"/></colgroup>');
   var geheim = $('<tr id="geheim"><td id="zaehler"></td></tr>');
   for (var i = 0; i < breite; i++) {
     colgroup.append($('<col class="brett"/>'));
