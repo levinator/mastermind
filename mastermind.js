@@ -1,6 +1,6 @@
-var felder = 3;
-var zuege = 5;
-var palette = ['blue', 'red', 'green', 'orange', 'purple', 'yellow'];
+var felder = 4;
+var zuege = 8;
+var palette = ['blue', 'red', 'green', 'pink', 'purple', 'yellow'];
 var farben = palette.length;
 
 var neues_brett = function(breite, hoehe) {
@@ -9,7 +9,7 @@ var neues_brett = function(breite, hoehe) {
   var geheim = $('<tr id="geheim"><td id="zaehler"></td></tr>');
   for (var i = 0; i < breite; i++) {
     colgroup.append($('<col class="brett"/>'));
-    geheim.append($('<th></th>'));
+    geheim.append($('<th>?</th>'));
   }
   brett.append(colgroup);
   brett.append(geheim);
@@ -19,6 +19,10 @@ var neues_brett = function(breite, hoehe) {
       zeile.append($('<td></td>'));
     }
     brett.append(zeile);
+  }
+  var farbwahl = $('table#farben tr');
+  for (var f = 0; f < farben; f++) {
+    farbwahl.append($('<td style="background-color:' + palette[f] + '"></td>'));
   }
 }
 $(document).ready(function(){
