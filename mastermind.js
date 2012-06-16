@@ -13,10 +13,10 @@ var neues_brett = function(breite, hoehe) {
   }
   brett.append(colgroup);
   brett.append(geheim);
-  for (var j = 0; j < hoehe; j++) {
+  for (var j = hoehe; j > 0; j--) {
     var zeile = $('<tr><th></th></tr>');
-    for (var i = 0; i < breite; i++) {
-      zeile.append($('<td></td>'));
+    for (var i = 1; i <= breite; i++) {
+      zeile.append($('<td id="' + id(i,j) + '"></td>'));
     }
     brett.append(zeile);
   }
@@ -25,6 +25,13 @@ var neues_brett = function(breite, hoehe) {
     farbwahl.append($('<td style="background-color:' + palette[f] + '"></td>'));
   }
 }
+var id = function(x,y) {
+  return '_' + x + '_' + y;
+}
+
 $(document).ready(function(){
   neues_brett(felder, zuege);
+  $('table#brett tr#geheim th').each(function() {
+    $(this).data('farbe', palette[Math.floor(Math.random() * farben)]);
+  });
 });
