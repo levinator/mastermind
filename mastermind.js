@@ -24,14 +24,24 @@ var neues_brett = function(breite, hoehe) {
   for (var f = 0; f < farben; f++) {
     farbwahl.append($('<td style="background-color:' + palette[f] + '"></td>'));
   }
+  brett.data('aktuell', id(1,1));
 }
 var id = function(x,y) {
   return '_' + x + '_' + y;
 }
+
+var einfaerbung = function(brett, farbe) {
+  $('#' + brett.data('aktuell')).css('background-color', farbe);
+  alert('aktuell: ' + brett.data('aktuell') + '. Farbe: ' + farbe);
+}
+
 
 $(document).ready(function(){
   neues_brett(felder, zuege);
   $('table#brett tr#geheim th').each(function() {
     $(this).data('farbe', palette[Math.floor(Math.random() * farben)]);
   });
-});
+  $('table#farben td').click(function() {
+    einfaerbung($('table#brett'), palette[$(this).index()]);
+  });
+ });
