@@ -1,7 +1,6 @@
-var palette = ['blue', 'red', 'green', 'pink', 'purple', 'yellow'];
-var farben = palette.length;
+var palette = ['navy', 'red', 'yellow', 'lime', 'cyan', 'purple', 'fuchsia', 'pink', 'maroon' ];
 
-var neues_brett = function(breite, hoehe) {
+var neues_brett = function(breite, hoehe, farben) {
   $('div#spiel').html('<table id="brett"></table><table id="farben"><tr></tr></table>');
   var brett = $('table#brett');
   var colgroup = $('<colgroup><col id="bewertung"/></colgroup>');
@@ -19,6 +18,7 @@ var neues_brett = function(breite, hoehe) {
     }
     brett.append(zeile);
   }
+  $('#bewertung').css('width', (30 + (breite < 5 ? 0 : breite > 6 ? 30 : 15)) + 'px');
   var farbwahl = $('table#farben tr');
   for (var f = 0; f < farben; f++) {
     farbwahl.append($('<td style="background-color:' + palette[f] + '"></td>'));
@@ -117,7 +117,7 @@ var glueckwunsch = function() {
 var game_over = function() {
   aufdecken();
   alert('Schade. Versuch es noch einmal.');
-  neues_brett($('input#breite').val(), $('input#hoehe').val());
+  neues_brett($('input#breite').val(), $('input#hoehe').val(), $('input#farbzahl').val());
 }
 
 var aufdecken = function() {
@@ -128,5 +128,5 @@ var aufdecken = function() {
 }
 
 $(document).ready(function(){
-  neues_brett($('input#breite').val(), $('input#hoehe').val());
+  neues_brett($('input#breite').val(), $('input#hoehe').val(), $('input#farbzahl').val());
  });
