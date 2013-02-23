@@ -41,19 +41,20 @@ var faerbe_aktuell = function(brett, id) {
 var einfaerbung = function(brett, farbe) {
   var aktuell = $('#' + brett.data('aktuell'));
   aktuell.css('background-color', farbe);
+  aktuell.data('farbe', farbe);
   var naechstes_in_zeile = aktuell.next();
-  if (naechstes_in_zeile.size() == 0) {
+  if (naechstes_in_zeile.size() == 0) { // Ende der Zeile
     var auswertung = werte_aus(aktuell.parent(), brett.find('#geheim'));
-    var naechste_zeile = aktuell.parent().prev();
-    if (naechste_zeile.attr('id') == 'geheim') {
-      if (auswertung == false) {
+    if (auswertung) { // alles schwarz
+      glueckwunsch();
+    } else {
+      var naechste_zeile = aktuell.parent().prev();
+      if (naechste_zeile.attr('id') == 'geheim') { // keine Zeilen mehr übrig
         game_over();
       } else {
-        glueckwunsch();
+        var erste_zelle = naechste_zeile.find('td:first-of-type');
+        faerbe_aktuell(brett, erste_zelle.attr('id'));
       }
-    } else {
-      var erste_zelle = naechste_zeile.find('td:first-of-type');
-      faerbe_aktuell(brett, erste_zelle.attr('id'));
     }
   } else {
     faerbe_aktuell(brett, naechstes_in_zeile.attr('id'));
@@ -61,10 +62,41 @@ var einfaerbung = function(brett, farbe) {
 }
 
 var werte_aus = function(auszuwertend, geheim) {
-  for (var i = 1; i <= geheim.find('th').size(); i++) {
-    alert(i);
+  // zurücksetzen
+  geheim.find('th').each(function() {$(this).removeClass("zugeordnet");});
+  // auf exakte Übereinstimmung prüfen: 
+  auszuwertend.find('td').each( function() {
+    var position = $(this).index();
+    var gleiche_position_in_geheim = geheim.find('th:nth-of-type(' + position + ')');
+    if ($(this).data('farbe') == gleiche_position_in_geheim.data('farbe')) {
+      $(this).addClass('schwarz');
+      gleiche_position_in_geheim.addClass('zugeordnet');
+    } 
+  });
+  // die weißen Auswertungen finden:
+  auszuwertend.find('td[class!="schwarz"]').each( function() {
+    var auszuwertende_zelle = $(this);
+    geheim.find('th[class!="zugeordnet"]').each(function() {
+      if ($(this).data('farbe') == auszuwertende_zelle.data('farbe')) {
+        $(this).addClass('zugeordnet');
+        auszuwertende_zelle.addClass('weiss');
+        return false;
+      }
+    });
+  });
+  var auswertungszelle = auszuwertend.find('th');
+  auszuwertend.find('td.schwarz').each(function() {
+    auswertungszelle.append('<span style="color:black">&#x2022;</span> ');
+  });
+  auszuwertend.find('td.weiss').each(function() {
+    auswertungszelle.append('<span style="color:white">&#x2022;</span> ');
+  });
+  if (auszuwertend.find('td[class!="schwarz"]').size() == 0) {
+    // alles schwarz, also gewonnen:
+    return true;  
+  } else {
+    return false;
   }
-  return true;
 }
 
 var glueckwunsch = function() {
@@ -79,7 +111,9 @@ var game_over = function() {
 $(document).ready(function(){
   neues_brett(felder, zuege);
   $('table#brett tr#geheim th').each(function() {
-    $(this).data('farbe', palette[Math.floor(Math.random() * farben)]);
+    var zufallsfarbe = palette[Math.floor(Math.random() * farben)];
+    // alert(zufallsfarbe);
+    $(this).data('farbe', zufallsfarbe);
   });
   $('table#farben td').click(function() {
     einfaerbung($('table#brett'), palette[$(this).index()]);
