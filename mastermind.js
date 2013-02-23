@@ -1,12 +1,11 @@
-var felder = 4;
-var zuege = 8;
 var palette = ['blue', 'red', 'green', 'pink', 'purple', 'yellow'];
 var farben = palette.length;
 
 var neues_brett = function(breite, hoehe) {
+  $('div#spiel').html('<table id="brett"></table><table id="farben"><tr></tr></table>');
   var brett = $('table#brett');
   var colgroup = $('<colgroup><col id="bewertung"/></colgroup>');
-  var geheim = $('<tr id="geheim"><td id="zaehler"></td></tr>');
+  var geheim = $('<tr id="geheim"><td id="zaehler" title="Punkte"></td></tr>');
   for (var i = 0; i < breite; i++) {
     colgroup.append($('<col class="brett"/>'));
     geheim.append($('<th>?</th>'));
@@ -28,13 +27,22 @@ var neues_brett = function(breite, hoehe) {
   brett.data('breite', breite);
   brett.data('hoehe', hoehe);
   faerbe_aktuell(brett, id(1,1));
+  $('table#brett tr#geheim th').each(function() {
+    var zufallsfarbe = palette[Math.floor(Math.random() * farben)];
+    // alert(zufallsfarbe);
+    $(this).data('farbe', zufallsfarbe);
+  });
+  $('table#farben td').click(function() {
+    einfaerbung($('table#brett'), palette[$(this).index()]);
+  });
 }
+
 var id = function(x,y) {
   return '_' + x + '_' + y;
 }
 
 var faerbe_aktuell = function(brett, id) {
-  brett.find('#' + id).css('background-color', '#dda');
+  brett.find('#' + id).css('background-color', '#ffc');
   brett.data('aktuell', id);
 }
 
@@ -100,22 +108,25 @@ var werte_aus = function(auszuwertend, geheim) {
 }
 
 var glueckwunsch = function() {
+  aufdecken();
+  // Punkte
+  $('#zaehler').text(1 * $('#brett').data('hoehe') + 1 - 1 * $('#brett').data('aktuell').replace(/^_[0-9]+_/, ''));
   alert('Herzlichen Glückwunsch!');
 }
 
 var game_over = function() {
-  alert('Schade. Nochmal versuchen?');
+  aufdecken();
+  alert('Schade. Versuch es noch einmal.');
+  neues_brett($('input#breite').val(), $('input#hoehe').val());
 }
 
+var aufdecken = function() {
+  $('#geheim th').each(function() {
+    $(this).css('background-color', $(this).data('farbe'));
+    $(this).text('!');
+  });
+}
 
 $(document).ready(function(){
-  neues_brett(felder, zuege);
-  $('table#brett tr#geheim th').each(function() {
-    var zufallsfarbe = palette[Math.floor(Math.random() * farben)];
-    // alert(zufallsfarbe);
-    $(this).data('farbe', zufallsfarbe);
-  });
-  $('table#farben td').click(function() {
-    einfaerbung($('table#brett'), palette[$(this).index()]);
-  });
+  neues_brett($('input#breite').val(), $('input#hoehe').val());
  });

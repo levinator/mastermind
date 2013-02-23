@@ -10,6 +10,9 @@
     table, td, th {
       border: 1px black solid;
     }
+    td#zaehler {
+      text-align: center;
+    }
     td, th {
       width: 30px;
       height: 30px;
@@ -40,13 +43,15 @@
   </head>
   <body>
     <h1>MasterMind</h1>
-    <h2>Für Opa Günter zum 69. Geburtstag</h2>
-    <p>22. Februar 2013</p>
-    <table id="brett">
-    </table>
-    <table id="farben">
-      <tr></tr>
-    </table>
-    <p><input type="button" onclick="window.location.reload()" value="neues Spiel"></input></p>
+    <h2><span title="mit Papas Hilfe">Von Levin</span> für Opa Günter zum 69. Geburtstag</h2>
+    <p>am 22. Februar 2013</p>
+    <div id="spiel">
+      
+    </div>
+    
+    <p>Anleitung: Klicke auf die farbigen Flächen und fülle Reihe um Reihe, bis Du die geheimen Farben erraten hast.</p>
+    <p><input type="button" onclick="neues_brett($('input#breite').val(), $('input#hoehe').val())" value="neues Spiel"></input></p>
+    <p><label for="breite">Breite</label> <input id="breite" type="text" size="1" pattern="[0-9]" maxlength="1" value="4"/> 
+      <label for="hoehe">Höhe</label> <input id="hoehe" type="text" size="1" pattern="[0-9]{1,2}" maxlength="2" value="8"/></p>
   </body>
 </html>
